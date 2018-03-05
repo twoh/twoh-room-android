@@ -30,21 +30,41 @@ public class RoomReadActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        /**
+         * Initialize layout dan sebagainya
+         */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read);
 
+        /**
+         * Initialize ArrayList untuk data barang
+         */
         daftarBarang = new ArrayList<>();
 
+        /**
+         * Initialize database
+         * allow main thread queries
+         */
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "barangdb").allowMainThreadQueries().build();
 
+        /**
+         * Initialize recyclerview dan layout manager
+         */
         rvView = findViewById(R.id.rv_main);
         rvView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
 
+        /**
+         * Add all data to arraylist
+         */
         daftarBarang.addAll(Arrays.asList(db.barangDAO().selectAllBarangs()));
 
+        /**
+         * Set all data ke adapter, dan menampilkannya
+         */
         adapter = new AdapterBarangRecyclerView(daftarBarang, this);
         rvView.setAdapter(adapter);
     }
